@@ -1,0 +1,15 @@
+D:\Trabajo\Universidad\MIO\2do Semestre\Proyectos\Hulk\bin\Debug\net7.0\Hulk.exe
+D:\Trabajo\Universidad\MIO\2do Semestre\Proyectos\Hulk\bin\Debug\net7.0\Hulk.deps.json
+D:\Trabajo\Universidad\MIO\2do Semestre\Proyectos\Hulk\bin\Debug\net7.0\Hulk.runtimeconfig.json
+D:\Trabajo\Universidad\MIO\2do Semestre\Proyectos\Hulk\bin\Debug\net7.0\Hulk.dll
+D:\Trabajo\Universidad\MIO\2do Semestre\Proyectos\Hulk\bin\Debug\net7.0\Hulk.pdb
+D:\Trabajo\Universidad\MIO\2do Semestre\Proyectos\Hulk\obj\Debug\net7.0\Hulk.csproj.AssemblyReference.cache
+D:\Trabajo\Universidad\MIO\2do Semestre\Proyectos\Hulk\obj\Debug\net7.0\Hulk.GeneratedMSBuildEditorConfig.editorconfig
+D:\Trabajo\Universidad\MIO\2do Semestre\Proyectos\Hulk\obj\Debug\net7.0\Hulk.AssemblyInfoInputs.cache
+D:\Trabajo\Universidad\MIO\2do Semestre\Proyectos\Hulk\obj\Debug\net7.0\Hulk.AssemblyInfo.cs
+D:\Trabajo\Universidad\MIO\2do Semestre\Proyectos\Hulk\obj\Debug\net7.0\Hulk.csproj.CoreCompileInputs.cache
+D:\Trabajo\Universidad\MIO\2do Semestre\Proyectos\Hulk\obj\Debug\net7.0\Hulk.dll
+D:\Trabajo\Universidad\MIO\2do Semestre\Proyectos\Hulk\obj\Debug\net7.0\refint\Hulk.dll
+D:\Trabajo\Universidad\MIO\2do Semestre\Proyectos\Hulk\obj\Debug\net7.0\Hulk.pdb
+D:\Trabajo\Universidad\MIO\2do Semestre\Proyectos\Hulk\obj\Debug\net7.0\Hulk.genruntimeconfig.cache
+D:\Trabajo\Universidad\MIO\2do Semestre\Proyectos\Hulk\obj\Debug\net7.0\ref\Hulk.dll
