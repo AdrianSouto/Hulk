@@ -1,6 +1,6 @@
 class Token{
 
-    public enum TokenType{Number, Sum, Resta, Mult, Div, Potencia, Pharentesis, KeyWord, Word, Igual}
+    public enum TokenType{Number, Sum, Resta, Mult, Div, Potencia, OpenPharentesis, ClosePharentesis, KeyWord, ID, Igual, Text, PredFunction}
     public string value{get;}
     public TokenType type{get;}
 
