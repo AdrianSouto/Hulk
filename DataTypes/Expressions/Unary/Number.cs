@@ -1,10 +1,11 @@
 namespace Hulk.Model;
 
-public class Text : UnaryExpression<string>
+public class Number : UnaryExpression
 {
-    public Text(string value) : base(value){}
+    public Number(string value) : base(value){}
     public override string Evaluate()
     {
         return value;
     }
+    
 }
