@@ -1,3 +1,5 @@
+using Hulk.DataTypes.Expressions.PredFunctions;
+
 static class Lexer{
     public static List<Token> tokens;
     static string[] symbols = {"+", "-", "/", "*", "(", ")", "=","\"",";", "^"};
@@ -47,11 +49,21 @@ static class Lexer{
                         isPlainText = false;
                     }
                     else
+                    {
+                        if(token != ""){
+                            tokens.Add(new Token(token, ClasificarToken(token)));
+                            token = "";
+                        }
                         isPlainText = true;
+                    }
                     continue;
                 }
 
-                if (isPlainText) continue;
+                if (isPlainText)
+                {
+                    token += c;
+                    continue;
+                }
                 if(token != "")
                     tokens.Add(new Token(token, ClasificarToken(token)));
                 tokens.Add(new Token(c.ToString(), ClasificarToken(c.ToString())));
@@ -73,9 +85,6 @@ static class Lexer{
             double.Parse(token);
             return Token.TokenType.Number;
         }catch(FormatException){
-            if(KeyWord.Keywords.Contains(token))
-                return Token.TokenType.KeyWord;
-
             switch(token){
                 case "+":
                     return Token.TokenType.Sum;
@@ -107,7 +116,14 @@ static class Lexer{
                     return Token.TokenType.Cot;
                 case "log":
                     return Token.TokenType.Log;
-                
+                case "print":
+                    return Token.TokenType.Print;
+                case "let":
+                    return Token.TokenType.VarDeclarationKeyWord;
+                case "in":
+                    return Token.TokenType.VarInKeyWord;
+                case "function":
+                    return Token.TokenType.FunDeclarationKeyWord;
                 default:
                     if(char.IsDigit(token.First()))
                         throw new LexicalException(token);

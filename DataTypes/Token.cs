@@ -1,4 +1,4 @@
-class Token{
+public class Token{
 
     public enum TokenType
     {
@@ -22,7 +22,10 @@ class Token{
         Cot,
         Sqrt,
         Log,
-        Print
+        Print,
+        VarDeclarationKeyWord,
+        VarInKeyWord,
+        FunDeclarationKeyWord
     }
 
     public string value{get;}

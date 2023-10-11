@@ -15,4 +15,9 @@ class SyntaxException : MyException{
         "https://github.com/matcom/programming/tree/main/projects/hulk#error-sint%C3%A1tico"
     ){}
 }
-
+class SemanticException : MyException{
+    public SemanticException(string msg) : base(
+        "! SEMANTIC ERROR: "+msg,
+        "https://github.com/matcom/programming/tree/main/projects/hulk#error-sem%C3%A1ntico"
+    ){}
+}

@@ -1,148 +1,57 @@
-using System.Linq.Expressions;
-using Hulk.Model;
-using Hulk.Model.PredFunctions;
-
-class Parser
+using System.Reflection;
+using Hulk.DataTypes.Variables;
+public class Parser
 {
-    private int current;
     private List<Token> tokens;
-    public string value;
-    public MyExpression tree;
-    
+    private int current;
+    public string Value;
     public Parser(List<Token> tokens)
     {
         this.tokens = tokens;
-        current = 0;
-        
-        tree = ParseExpression();
-        value = tree.Evaluate();
-    }
-    MyExpression ParseExpression()
-    {
-        return ParseSum();
+        Value = CheckSyntax();
     }
 
-    private MyExpression ParseSum()
+    private string CheckSyntax()
     {
-        MyExpression left = ParseMult();
-        
-        while(current < tokens.Count && (tokens[current].type == Token.TokenType.Sum || tokens[current].type == Token.TokenType.Resta))
+        if (tokens[current].type == Token.TokenType.VarDeclarationKeyWord)
         {
-            Token.TokenType currentOp = tokens[current].type;
-            current++;
-            MyExpression right = ParseMult();
-            if(currentOp == Token.TokenType.Sum)
-                left = new Addition(left, right);
-            else 
-                left = new Subtraction(left, right);
-        }
-        if(current<tokens.Count-1) throw new SyntaxException("Invalid Expression '"+tokens[current].value+"' is not a valid operator");
-        return left;
-    }
-
-    private MyExpression ParseMult()
-    {
-        MyExpression left = ParsePow();
-        while(current < tokens.Count && (tokens[current].type == Token.TokenType.Product || tokens[current].type == Token.TokenType.Div))
-        {
-            Token.TokenType currentOp = tokens[current].type;
-            current++;
-            MyExpression right = ParsePow();
-            if(currentOp == Token.TokenType.Product)
-                left= new Product(left, right);
+            Variable myVar = new Variable();
+            if (tokens[++current].type == Token.TokenType.ID)
+                myVar.Name = tokens[current].value;
             else
-                left = new Division(left, right);
-        }
-
-        return left;
-    }
-    private MyExpression ParsePow()
-    {
-        MyExpression left = ParseTerm();
-        while(current < tokens.Count && tokens[current].type == Token.TokenType.Pow)
-        {
-            Token.TokenType currentOp = tokens[current].type;
-            current++;
-            MyExpression right = ParseTerm();
-            if(currentOp == Token.TokenType.Pow)
-                left= new Power(left, right);
-        }
-
-        return left;
-    }
-
-    private MyExpression ParseTerm()
-    {
-        switch (tokens[current].type)
-        {
-            case Token.TokenType.Number:
-                return new Number(tokens[current++].value);
-            case Token.TokenType.Sin:
-                return new Sin(GetParams());
-            case Token.TokenType.Cos:
-                return new Cos(GetParams());
-            case Token.TokenType.Tan:
-                return new Tan(GetParams());
-            case Token.TokenType.Cot:
-                return new Cot(GetParams());
-            case Token.TokenType.Log:
-                return new Log(GetParams());
-            case Token.TokenType.Sqrt:
-                return new Sqrt(GetParams());
-            case Token.TokenType.OpenParenthesis:
-                current--;
-                return GetParams();
-        }
-        
-        throw new SyntaxException("Invalid Expression");
-    }
-
-    private MyExpression GetParams()
-    {
-        List<Token> paramTokens = new List<Token>();
-        if (tokens[++current].type == Token.TokenType.OpenParenthesis)
-        {
-            int parentCount = 1;
-            while (parentCount != 0)
+                throw new SyntaxException("VarName expected after " + tokens[current - 1]+" in let-in expression");
+            if(tokens[++current].type != Token.TokenType.Igual)
+                throw new SyntaxException("'=' expected after " + tokens[current - 1]+" in let-in expression");
+            if (tokens[++current].type == Token.TokenType.Text)
             {
-                current++;
-                if (tokens[current].type == Token.TokenType.OpenParenthesis) parentCount++;
-                else if (tokens[current].type == Token.TokenType.CloseParenthesis) parentCount--;
-                paramTokens.Add(tokens[current]);
+                myVar.Type = Variable.VarType.String;
+                myVar.Value = tokens[current++].value;
+            }
+            else
+            {
+                List<Token> t = new List<Token>();
+                while (tokens[current].type != Token.TokenType.VarInKeyWord){
+                    t.Add(tokens[current++]);
+                    if (current == tokens.Count) throw new SyntaxException("Missing 'in' KeyWord on let-in expression");
+                }
+                MathParser mp = new MathParser(t);
+                myVar.Value = mp.value;
                 
             }
 
-            current++;
-            return new Parser(paramTokens).tree;
+            if (tokens[current++].type == Token.TokenType.VarInKeyWord)
+            {
+                Context c = new Context();
+                c.MyVars.Add(myVar);
+                List<Token> t = new List<Token>();
+                while (tokens[current].type != Token.TokenType.Semicolon)
+                    t.Add(tokens[current++]);
+                return new MathParser(t, c).value;
+            }
+            throw new SyntaxException("Missing 'in' KeyWord on let-in expression");
         }
-        throw new SyntaxException("Missing Parenthesis after function Declaration");
+
+        return "";
     }
 
-    /*private void CheckSyntax(List<Token> tokens)
-    {
-        for (int i = 0; i < tokens.Count; i++)
-        {
-            if (tokens[i].type == Token.TokenType.KeyWord)
-            {
-                nodes.Add(new KeyWord(tokens[i].value));
-                continue;
-            }
-        }
-    }*/
-
-    /*static void CheckSyntax(List<Token> tokens){
-        for(int x = 0; x < tokens.Count; x++){
-            Token t = tokens[x];
-            if(t.type == Token.TokenType.Word){
-                if(char.IsDigit(t.value.First())){
-                    throw new LexicalException(t.value);
-                }
-            }
-            if(t.type == Token.TokenType.KeyWord){
-                if(x == tokens.Count-1 || tokens[x+1].type != Token.TokenType.Word){
-                    throw new SyntaxException("Missing VarName after "+t.value);
-                }
-            }
-        }
-    }*/
 }
