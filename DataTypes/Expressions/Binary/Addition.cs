@@ -12,8 +12,8 @@ class Addition : BinaryMyExpression
 
     public override string Evaluate()
     {
-        /*if (LeftMyExpression is Text && RightMyExpression is Text)
-            return LeftMyExpression.value + RightMyExpression.value;*/
+        if (LeftMyExpression is Text || RightMyExpression is Text)
+            throw new  SemanticException("No se puede sumar 2 Strings, el operador de concatenacion es '@'.");
         return (double.Parse(LeftMyExpression.Evaluate()) + double.Parse(RightMyExpression.Evaluate())).ToString();
     }
 }

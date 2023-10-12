@@ -25,7 +25,9 @@ public class Token{
         Print,
         VarDeclarationKeyWord,
         VarInKeyWord,
-        FunDeclarationKeyWord
+        FunDeclarationKeyWord,
+        Concat,
+        Comma
     }
 
     public string value{get;}

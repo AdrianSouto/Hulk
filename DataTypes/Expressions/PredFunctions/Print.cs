@@ -4,12 +4,25 @@ namespace Hulk.DataTypes.Expressions.PredFunctions;
 
 class Print : PredFunction
 {
-    public Print(MyExpression param) : base("print", param)
+    public Print(List<MyExpression> args) : base("Print", args)
     {
     }
 
+    protected override int CantArgs => 1;
+
     public override string Evaluate()
     {
-        return Param.Evaluate();
+        return Args[0].Evaluate();
+    }
+
+    public override string ToString()
+    {
+        string str = value + "(";
+        foreach (MyExpression e in Args)
+        {
+            str += e + ", ";
+        }
+
+        return str.Substring(0, str.Length - 2) + ")";
     }
 }

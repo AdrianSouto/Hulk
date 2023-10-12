@@ -1,5 +1,3 @@
-namespace Hulk.DataTypes.Variables;
-
 public class Variable
 {
     public enum VarType
@@ -10,6 +8,6 @@ public class Variable
     }
     
     public string Name;
-    public string Value;
+    public MyExpression VarTree;
     public VarType Type;
 }

@@ -1,10 +1,10 @@
 namespace Hulk.Model;
 
-abstract class BinaryMyExpression : MyExpression
+public abstract class BinaryMyExpression : MyExpression
 {
     // Make the properties public
-    public MyExpression LeftMyExpression { get; set; }
-    protected MyExpression RightMyExpression { get; set; }
+    public MyExpression LeftMyExpression { get;}
+    protected MyExpression RightMyExpression { get;}
 
     public abstract override string value{get;}
 

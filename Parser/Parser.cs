@@ -1,8 +1,7 @@
 using System.Reflection;
-using Hulk.DataTypes.Variables;
 public class Parser
 {
-    private List<Token> tokens;
+    /*private List<Token> tokens;
     private int current;
     public string Value;
     public Parser(List<Token> tokens)
@@ -52,6 +51,6 @@ public class Parser
         }
 
         return "";
-    }
+    }*/
 
 }

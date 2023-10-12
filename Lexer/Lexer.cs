@@ -2,7 +2,10 @@ using Hulk.DataTypes.Expressions.PredFunctions;
 
 static class Lexer{
     public static List<Token> tokens;
-    static string[] symbols = {"+", "-", "/", "*", "(", ")", "=","\"",";", "^"};
+    static string[] symbols =
+    {
+        "+", "-", "/", "*", "(", ")", "=","\"",";", "^",","
+    };
     public static void ApplyLexer(string input)
     {
         if (!IsBalanced(input)) throw new SyntaxException("Input no balanceado");
@@ -124,6 +127,10 @@ static class Lexer{
                     return Token.TokenType.VarInKeyWord;
                 case "function":
                     return Token.TokenType.FunDeclarationKeyWord;
+                case "@":
+                    return Token.TokenType.Concat;
+                case ",":
+                    return Token.TokenType.Comma;
                 default:
                     if(char.IsDigit(token.First()))
                         throw new LexicalException(token);
