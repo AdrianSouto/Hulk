@@ -27,7 +27,19 @@ public class Token{
         VarInKeyWord,
         FunDeclarationKeyWord,
         Concat,
-        Comma
+        Comma,
+        If,
+        Else,
+        Comparar,
+        Negation,
+        Different,
+        And,
+        Or,
+        Resto,
+        Bool,
+        MayorQ,
+        Arrow,
+        MenorQ
     }
 
     public string value{get;}

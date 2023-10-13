@@ -9,7 +9,7 @@ class MathParser
     private List<Token> tokens;
     public string value;
     public MyExpression tree;
-    private Context? context;
+    private Context context;
     
     public MathParser(List<Token> tokens, Context? context = null)
     {
@@ -28,15 +28,99 @@ class MathParser
             return ParseVarDeclaration();
         }
 
-        return ParseSum();
+        if (tokens[current].type == Token.TokenType.If)
+        {
+            current++;
+            return ParseIfDeclaration();
+        }
+
+        /*if (tokens[current].type == Token.TokenType.FunDeclarationKeyWord)
+        {
+            current++;
+            return ParseFunDeclaration();
+        }*/
+
+        MyExpression e = ParseAndOr();
+        if(current<tokens.Count-1) 
+            throw new SyntaxException("Invalid Expression '"+tokens[current].value+"' is not a valid operator");
+        return e;
+    }
+
+    /*private MyExpression ParseFunDeclaration()
+    {
+        string funName;
+        List<MyExpression> funParams;
+        MyExpression funBody;
+        if (tokens[++current].type == Token.TokenType.ID)
+            funName = tokens[current].value;
+        else
+            throw new SyntaxException("FuncName expected after " + tokens[current - 1]+" in function declaration");
+
+        if (tokens[++current].type == Token.TokenType.OpenParenthesis)
+            funParams = GetParams();
+        else
+            throw new SyntaxException("FuncName expected after " + tokens[current - 1]+" in function declaration");
+
+        
+        if (tokens[++current].type != Token.TokenType.Arrow)
+            throw new SyntaxException("'=>' expected after " + tokens[current - 1] + " in function declaration");
+            
+        current++;
+        List<Token> t1 = new List<Token>();
+        while (tokens[current].type != Token.TokenType.Semicolon){
+            t1.Add(tokens[current++]);
+            if (current == tokens.Count) throw new SyntaxException("Missing 'in' KeyWord on let-in expression");
+        }
+            
+        funBody = new MathParser(t1, context).tree;
+        
+        throw new SyntaxException("Missing 'in' KeyWord on let-in expression");
+    }*/
+
+    private MyExpression ParseIfDeclaration()
+    {
+        if (tokens[current].type == Token.TokenType.OpenParenthesis)
+        {
+            string coditionResult = SolveParenthesis().Evaluate();
+            List<Token> t1 = new List<Token>();
+            if (coditionResult.ToLower() == "true")
+            {
+                while (tokens[current].type != Token.TokenType.Else)
+                {
+                    t1.Add(tokens[current++]);
+                    if (current == tokens.Count) throw new SyntaxException("Missing 'else' KeyWord on if-else expression");
+                }
+
+                current++;
+                return new MathParser(t1, context).tree;
+
+            }
+            while (tokens[current].type != Token.TokenType.Else)
+            {
+                current++;
+            }
+
+            current++;
+            t1.Clear();
+            while (current < tokens.Count)
+            {
+                t1.Add(tokens[current++]);
+                //if (current == tokens.Count) throw new SyntaxException("Missing ';' KeyWord on if-else expression");
+            }
+
+            return new MathParser(t1, context).tree;
+        }
+
+        throw new SyntaxException("If");
+
     }
 
     private MyExpression ParseVarDeclaration()
     {
-        
-            Variable myVar = new Variable();
+        string varName;
+        MyExpression varValue;
             if (tokens[++current].type == Token.TokenType.ID)
-                myVar.Name = tokens[current].value;
+                varName = tokens[current].value;
             else
                 throw new SyntaxException("VarName expected after " + tokens[current - 1]+" in let-in expression");
             if (tokens[++current].type != Token.TokenType.Igual)
@@ -49,18 +133,76 @@ class MathParser
                 if (current == tokens.Count) throw new SyntaxException("Missing 'in' KeyWord on let-in expression");
             }
             
-            myVar.VarTree = new MathParser(t1, context).tree;
+            varValue = new MathParser(t1, context).tree;
 
             if (tokens[current++].type == Token.TokenType.VarInKeyWord)
             {
-                Context c = new Context();
-                c.MyVars.Add(myVar);
+                //Context c = new Context();
+                context.MyVars.Add(new Variable(varName, varValue));
                 List<Token> t2 = new List<Token>();
-                while (tokens[current].type != Token.TokenType.Semicolon)
+                while (current < tokens.Count)
                     t2.Add(tokens[current++]);
-                return new MathParser(t2, c).tree;
+                return new MathParser(t2, context).tree;
             }
             throw new SyntaxException("Missing 'in' KeyWord on let-in expression");
+    }
+    
+    private MyExpression ParseAndOr()
+    {
+        MyExpression left = Compare();
+        
+        while(current < tokens.Count && (
+                  tokens[current].type == Token.TokenType.And || 
+                  tokens[current].type == Token.TokenType.Or)
+             )
+        {
+            Token.TokenType currentOp = tokens[current].type;
+            current++;
+            MyExpression right = Compare();
+            switch (currentOp)
+            {
+                case Token.TokenType.And:
+                    left = new And(left, right);
+                    break;
+                case Token.TokenType.Or:
+                    left = new Or(left, right);
+                    break;
+            }
+        }
+        return left;
+    }
+    
+    private MyExpression Compare()
+    {
+        MyExpression left = ParseSum();
+        
+        while(current < tokens.Count && (
+                  tokens[current].type == Token.TokenType.Comparar || 
+                  tokens[current].type == Token.TokenType.Different ||
+                  tokens[current].type == Token.TokenType.MayorQ || 
+                  tokens[current].type == Token.TokenType.MenorQ
+             ))
+        {
+            Token.TokenType currentOp = tokens[current].type;
+            current++;
+            MyExpression right = ParseSum();
+            switch (currentOp)
+            {
+                case Token.TokenType.Comparar:
+                    left = new Compare(left, right);
+                    break;
+                case Token.TokenType.Different:
+                    left = new Different(left, right);
+                    break;
+                case Token.TokenType.MayorQ:
+                    left = new MayorQ(left, right);
+                    break;
+                case Token.TokenType.MenorQ:
+                    left = new MenorQ(left, right);
+                    break;
+            }
+        }
+        return left;
     }
 
     private MyExpression ParseSum()
@@ -77,8 +219,6 @@ class MathParser
             else 
                 left = new Subtraction(left, right);
         }
-        if(current<tokens.Count-1) 
-            throw new SyntaxException("Invalid Expression '"+tokens[current].value+"' is not a valid operator");
         return left;
     }
     
@@ -100,15 +240,21 @@ class MathParser
     private MyExpression ParseMult()
     {
         MyExpression left = ParsePow();
-        while(current < tokens.Count && (tokens[current].type == Token.TokenType.Product || tokens[current].type == Token.TokenType.Div))
+        while(current < tokens.Count && (
+                  tokens[current].type == Token.TokenType.Product || 
+                  tokens[current].type == Token.TokenType.Div ||
+                  tokens[current].type == Token.TokenType.Resto
+                  ))
         {
             Token.TokenType currentOp = tokens[current].type;
             current++;
             MyExpression right = ParsePow();
             if(currentOp == Token.TokenType.Product)
                 left= new Product(left, right);
-            else
+            else if(currentOp == Token.TokenType.Div)
                 left = new Division(left, right);
+            else
+                left = new Resto(left, right);
         }
 
         return left;
@@ -136,6 +282,8 @@ class MathParser
                 return new Number(tokens[current++].value);
             case Token.TokenType.Text:
                 return new Text(tokens[current++].value);
+            case Token.TokenType.Bool:
+                return new Bool(tokens[current++].value);
             case Token.TokenType.Sin:
                 return new Sin(GetParams());
             case Token.TokenType.Cos:
@@ -152,14 +300,22 @@ class MathParser
                 return new Print(GetParams());
             case Token.TokenType.OpenParenthesis:
                 return SolveParenthesis();
+            case Token.TokenType.Resta:
+                current++;
+                return new Number((-double.Parse(ParseTerm().Evaluate())).ToString());
+            case Token.TokenType.Negation:
+                current++;
+                return new Bool((bool.Parse(ParseTerm().Evaluate())).ToString());
+
         }
 
-        int varIndex = context.MyVars.FindIndex(x => x.Name == tokens[current++].value);
-        if (varIndex != -1)
+        Variable? v = context.FindVar(tokens[current].value);
+        if (v != null)
         {
-            return context.MyVars[varIndex].VarTree;
+            current++;
+            return v.VarTree;
         }
-        throw new SyntaxException("Invalid Expression");
+        throw new SyntaxException("Invalid Expression '"+tokens[current].value+"'");
     }
 
     private List<MyExpression> GetParams()
@@ -177,7 +333,7 @@ class MathParser
                 else if (tokens[current].type == Token.TokenType.CloseParenthesis)
                     parentCount--;
                 paramTokens.Add(tokens[current++]);
-                if (parentCount != 0 && tokens[current].type == Token.TokenType.Comma)
+                if (parentCount == 1 && tokens[current].type == Token.TokenType.Comma)
                 {
                     paramExpressions.Add(new MathParser(paramTokens, context).tree);
                     paramTokens.Clear();
@@ -210,33 +366,4 @@ class MathParser
         current++;
         return new MathParser(paramTokens, context).tree;
     }
-    
-
-    /*private void CheckSyntax(List<Token> tokens)
-    {
-        for (int i = 0; i < tokens.Count; i++)
-        {
-            if (tokens[i].type == Token.TokenType.KeyWord)
-            {
-                nodes.Add(new KeyWord(tokens[i].value));
-                continue;
-            }
-        }
-    }*/
-
-    /*static void CheckSyntax(List<Token> tokens){
-        for(int x = 0; x < tokens.Count; x++){
-            Token t = tokens[x];
-            if(t.type == Token.TokenType.Word){
-                if(char.IsDigit(t.value.First())){
-                    throw new LexicalException(t.value);
-                }
-            }
-            if(t.type == Token.TokenType.KeyWord){
-                if(x == tokens.Count-1 || tokens[x+1].type != Token.TokenType.Word){
-                    throw new SyntaxException("Missing VarName after "+t.value);
-                }
-            }
-        }
-    }*/
 }

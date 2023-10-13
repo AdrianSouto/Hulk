@@ -2,9 +2,10 @@ using Hulk.DataTypes.Expressions.PredFunctions;
 
 static class Lexer{
     public static List<Token> tokens;
+    private static int igualCount = 0;
     static string[] symbols =
     {
-        "+", "-", "/", "*", "(", ")", "=","\"",";", "^",","
+        "+", "-", "/", "*", "(", ")", "=" ,"\"",";", "^",",","!","&","|","%", ">", "<"
     };
     public static void ApplyLexer(string input)
     {
@@ -69,7 +70,30 @@ static class Lexer{
                 }
                 if(token != "")
                     tokens.Add(new Token(token, ClasificarToken(token)));
+
+                if (c == '=')
+                {
+                    if(tokens.Last().type == Token.TokenType.Igual)
+                    {
+                        tokens.Remove(tokens.Last());
+                        tokens.Add(new Token("==", Token.TokenType.Comparar));
+                        continue;
+                    }
+                    if (tokens.Last().type == Token.TokenType.Negation)
+                    {
+                        tokens.Remove(tokens.Last());
+                        tokens.Add(new Token("!=", Token.TokenType.Different));
+                        continue;
+                    }
+                    if (tokens.Last().type == Token.TokenType.MayorQ)
+                    {
+                        tokens.Remove(tokens.Last());
+                        tokens.Add(new Token("!=", Token.TokenType.Arrow));
+                        continue;
+                    }
+                }
                 tokens.Add(new Token(c.ToString(), ClasificarToken(c.ToString())));
+
                 token = "";
 
             }else{
@@ -88,7 +112,8 @@ static class Lexer{
             double.Parse(token);
             return Token.TokenType.Number;
         }catch(FormatException){
-            switch(token){
+            
+            switch(token.ToLower()){
                 case "+":
                     return Token.TokenType.Sum;
                 case "-":
@@ -107,8 +132,23 @@ static class Lexer{
                     return Token.TokenType.CloseParenthesis;
                 case "=":
                     return Token.TokenType.Igual;
+                case ">":
+                    return Token.TokenType.MayorQ;
+                case "<":
+                    return Token.TokenType.MenorQ;
+                case "!":
+                    return Token.TokenType.Negation;
+                case "&":
+                    return Token.TokenType.And;
+                case "|":
+                    return Token.TokenType.Or;
+                case "%":
+                    return Token.TokenType.Resto;
                 case ";":
                     return Token.TokenType.Semicolon;
+                case "true":
+                case "false":
+                    return Token.TokenType.Bool;
                 case "sin":
                     return Token.TokenType.Sin;
                 case "cos":
@@ -131,6 +171,10 @@ static class Lexer{
                     return Token.TokenType.Concat;
                 case ",":
                     return Token.TokenType.Comma;
+                case "if":
+                    return Token.TokenType.If;
+                case "else":
+                    return Token.TokenType.Else;
                 default:
                     if(char.IsDigit(token.First()))
                         throw new LexicalException(token);
