@@ -3,13 +3,14 @@ namespace Hulk.DataTypes.Variables;
 public class UserFunction
 {
     public string Name;
-    public List<MyExpression> FunParams;
-    public MyExpression FunBody;
+    public List<Token> FunBody;
+    public List<string> ParamNames;
+    
 
-    public UserFunction(string name, List<MyExpression> funParams, MyExpression funBody)
+    public UserFunction(string name, List<string> paramNames, List<Token> funBody)
     {
         Name = name;
-        FunParams = funParams;
         FunBody = funBody;
+        ParamNames = paramNames;
     }
 }

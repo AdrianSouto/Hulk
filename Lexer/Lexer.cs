@@ -85,12 +85,13 @@ static class Lexer{
                         tokens.Add(new Token("!=", Token.TokenType.Different));
                         continue;
                     }
-                    if (tokens.Last().type == Token.TokenType.MayorQ)
-                    {
-                        tokens.Remove(tokens.Last());
-                        tokens.Add(new Token("!=", Token.TokenType.Arrow));
-                        continue;
-                    }
+                    
+                }
+                if (c == '>' && tokens.Last().type == Token.TokenType.Igual)
+                {
+                    tokens.Remove(tokens.Last());
+                    tokens.Add(new Token("=>", Token.TokenType.Arrow));
+                    continue;
                 }
                 tokens.Add(new Token(c.ToString(), ClasificarToken(c.ToString())));
 
