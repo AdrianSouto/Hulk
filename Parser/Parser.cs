@@ -14,13 +14,17 @@ public class Parser
     
     public Parser(List<Token> tokens, Context? context = null)
     {
+        
         context ??= new Context();
         this.context = context;
         this.tokens = tokens;
         current = 0;
-        
-        
-        tree = Parse();
+        if (tokens[current].type == Token.TokenType.FunDeclarationKeyWord)
+        {
+            current++;
+            ParseFunDeclaration();
+        }else
+            tree = Parse();
     }
 
     public string Evaluate()
@@ -40,26 +44,21 @@ public class Parser
             return ParseIfDeclaration();
         }
         
-        if (tokens[current].type == Token.TokenType.FunDeclarationKeyWord)
-        {
-            current++;
-            return ParseFunDeclaration();
-        }
+        
 
         
 
         MyExpression e = ParseAndOr();
-        if(current<tokens.Count-1) 
-            throw new SyntaxException("Invalid Expression '"+tokens[current].value+"' is not a valid operator");
+        //if(current<tokens.Count-1) 
+            //throw new SyntaxException("Invalid Expression '"+tokens[current].value+"' is not a valid operator");
         return e;
     }
 
-    private MyExpression ParseFunDeclaration()
+    private void ParseFunDeclaration()
     {
         string funName;
         List<Token> funBody;
         List<string> funParams = new List<string>();
-        Context funContext = new Context();
         if (tokens[current].type == Token.TokenType.ID)
             funName = tokens[current].value;
         else
@@ -81,19 +80,8 @@ public class Parser
         while (tokens[current].type != Token.TokenType.Semicolon){
             funBody.Add(tokens[current++]);
         }
+        UserFunction.AddFunction(new UserFunction(funName, funParams, funBody));
 
-        Context c = new Context();
-        c.AddFunction(new UserFunction(funName, funParams, funBody));
-        Console.WriteLine();
-        Console.Write(">");
-        string input =  Console.ReadLine();
-        if (!string.IsNullOrWhiteSpace(input))
-        {
-            Lexer.ApplyLexer(input);
-            return new Parser(Lexer.tokens, c).tree;
-        }
-
-        throw new SyntaxException("Error function");
     }
 
     private List<string> GetFunDeclParams()
@@ -354,18 +342,19 @@ public class Parser
             current++;
             return v.VarTree;
         }
-        UserFunction? f = context.FindFunction(tokens[current].value);
+        UserFunction? f = UserFunction.FindFunction(tokens[current].value);
         if (f != null)
         {
+            Context c = new Context();
             List<MyExpression> list = GetParams();
             for (int i = 0; i < list.Count; i++)
             {
                 string vName = f.ParamNames[i];
                 MyExpression vTree = list[i];
-                context.AddVar(new Variable(vName, vTree));
+                
+                c.AddVar(new Variable(vName, vTree));
             }
-            
-            return new Parser(f.FunBody, context).tree;
+            return new Parser(f.FunBody, c).tree;
         }
         throw new SyntaxException("Invalid Expression '"+tokens[current].value+"'");
     }
@@ -413,8 +402,6 @@ public class Parser
                 parentCount--;
             if (parentCount == 0) break;
             paramTokens.Add(tokens[current++]);
-            /*if(tokens[current].type == Token.TokenType.Semicolon)
-                break;*/
         }
 
         current++;

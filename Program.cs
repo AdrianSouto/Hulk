@@ -10,8 +10,9 @@ class Program{
             {
                 try{
                     Lexer.ApplyLexer(input);
-                    Parser p = new Parser(Lexer.tokens);
-                    Console.WriteLine(p.Evaluate());
+                    Parser p = new Parser(Lexer.tokens); 
+                    if(p.tree != null)
+                        Console.WriteLine(p.Evaluate());
                 }catch(MyException e){
                     Console.WriteLine(e.Message);
                     Console.WriteLine("Para mas info visite: "+e.HelpLink);
