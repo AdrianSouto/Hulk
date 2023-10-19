@@ -10,6 +10,13 @@ class MenorQ : BinaryMyExpression
     public override string value => "<";
 
     public override string Evaluate(){
-        return (double.Parse(LeftMyExpression.Evaluate()) < double.Parse(RightMyExpression.Evaluate())).ToString();
+        try
+        {
+            return (double.Parse(LeftMyExpression.Evaluate()) > double.Parse(RightMyExpression.Evaluate())).ToString();
+        }
+        catch (FormatException)
+        {
+            throw new SemanticException("La operacion " + value + " solo esta concebida para números");
+        }
     }
 }

@@ -11,8 +11,13 @@ class Resto : BinaryMyExpression
 
     public override string Evaluate()
     {
-        if (LeftMyExpression is Text || RightMyExpression is Text)
+        try
+        {
+            return (double.Parse(LeftMyExpression.Evaluate()) % double.Parse(RightMyExpression.Evaluate())).ToString();
+        }
+        catch (FormatException)
+        {
             throw new  SemanticException("No se puede hacer operacion resto entre 2 Strings, el operador de concatenacion es '@'.");
-        return (double.Parse(LeftMyExpression.Evaluate()) % double.Parse(RightMyExpression.Evaluate())).ToString();
+        }
     }
 }

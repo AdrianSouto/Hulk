@@ -7,9 +7,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cf78e714-bf2b-44c5-a750-60855f0167b6" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Hulk/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Hulk/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="cf78e714-bf2b-44c5-a750-60855f0167b6" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -45,7 +43,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/2befa62c21c14a918916e4a7d9e1ce75b1c8a8/cc/9ac67107/SpanHelpers.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/33408e3a7a3740e0b7febb67423786ca3a68b0/43/123bc56e/Expression`1.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/66c3c1fbae4df879cbff3a39a35a496b3931c215419c69ebe663317bbe2e/CultureInfo.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock://D:/Trabajo/Universidad/MIO/2do Semestre/Proyectos/Hulk/Context/Context.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://D:/Trabajo/Universidad/MIO/2do Semestre/Proyectos/Hulk/DataTypes/Expressions/Binary/Addition.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -62,29 +60,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "main",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "http.proxy",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;rider.external.source.directories&quot;: [
-      &quot;C:\\Users\\Adrian\\AppData\\Roaming\\JetBrains\\Rider2023.2\\resharper-host\\DecompilerCache&quot;,
-      &quot;C:\\Users\\Adrian\\AppData\\Roaming\\JetBrains\\Rider2023.2\\resharper-host\\SourcesCache&quot;,
-      &quot;C:\\Users\\Adrian\\AppData\\Local\\Symbols\\src&quot;
+  "keyToStringList": {
+    "rider.external.source.directories": [
+      "C:\\Users\\Adrian\\AppData\\Roaming\\JetBrains\\Rider2023.2\\resharper-host\\DecompilerCache",
+      "C:\\Users\\Adrian\\AppData\\Roaming\\JetBrains\\Rider2023.2\\resharper-host\\SourcesCache",
+      "C:\\Users\\Adrian\\AppData\\Local\\Symbols\\src"
     ]
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="Hulk" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="" />
@@ -134,6 +132,8 @@
       <workItem from="1697488035732" duration="247000" />
       <workItem from="1697498685378" duration="681000" />
       <workItem from="1697507101789" duration="378000" />
+      <workItem from="1697507562084" duration="2000000" />
+      <workItem from="1697648013975" duration="6544000" />
     </task>
     <task id="LOCAL-00001" summary="Solve Simple Math Expressions">
       <option name="closed" value="true" />
@@ -223,7 +223,23 @@
       <option name="project" value="LOCAL" />
       <updated>1697507135846</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Functions to static">
+      <option name="closed" value="true" />
+      <created>1697507629654</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1697507629654</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Fix Fib and VarDecl with Comma Problems">
+      <option name="closed" value="true" />
+      <created>1697673846335</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1697673846335</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -264,26 +280,10 @@
     <MESSAGE value="Condicionales(==,&gt;,&lt;, !=, !, %)" />
     <MESSAGE value="Functions" />
     <MESSAGE value="Functions to static" />
-    <option name="LAST_COMMIT_MESSAGE" value="Functions to static" />
+    <MESSAGE value="Fix Fib and VarDecl with Comma Problems" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix Fib and VarDecl with Comma Problems" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Parser/Parser.cs</url>
-          <line>345</line>
-          <properties documentPath="D:\Trabajo\Universidad\MIO\2do Semestre\Proyectos\Hulk\Parser\Parser.cs" initialLine="344" containingFunctionPresentation="Method 'ParseTerm'">
-            <startOffsets>
-              <option value="11597" />
-            </startOffsets>
-            <endOffsets>
-              <option value="11611" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="92" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <pin-to-top-manager>
       <pinned-members>
         <PinnedItemInfo parentTag="Frame#Parser.ParseFunDeclaration" memberName="funParams" />

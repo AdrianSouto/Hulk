@@ -12,8 +12,14 @@ class Power : BinaryMyExpression
 
     public override string Evaluate()
     {
-        if (LeftMyExpression is Text || RightMyExpression is Text)
-            throw new  SemanticException("No se puede realizar la potenciacion a 2 Strings, el operador de concatenacion es '@'.");
-        return Math.Pow(double.Parse(LeftMyExpression.Evaluate()), double.Parse(RightMyExpression.Evaluate())).ToString();
+        try
+        {
+            return Math.Pow(double.Parse(LeftMyExpression.Evaluate()), double.Parse(RightMyExpression.Evaluate())).ToString();
+        }
+        catch (FormatException)
+        {
+            throw new SemanticException(
+                "No se puede realizar la potenciacion a 2 Strings, el operador de concatenacion es '@'.");
+        }
     }
 }

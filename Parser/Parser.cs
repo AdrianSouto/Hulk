@@ -140,38 +140,40 @@ public class Parser
 
     private MyExpression ParseVarDeclaration()
     {
-        string varName;
-        MyExpression varValue;
+        while (tokens[current].type != Token.TokenType.VarInKeyWord)
+        {
+            string varName;
+            MyExpression varValue;
             if (tokens[++current].type == Token.TokenType.ID)
                 varName = tokens[current].value;
             else
                 throw new SyntaxException("VarName expected after " + tokens[current - 1]+" in let-in expression");
             if (tokens[++current].type != Token.TokenType.Igual)
                 throw new SyntaxException("'=' expected after " + tokens[current - 1] + " in let-in expression");
-            
+        
             current++;
             List<Token> t1 = new List<Token>();
             while (tokens[current].type != Token.TokenType.VarInKeyWord){
                 t1.Add(tokens[current++]);
                 if (current == tokens.Count)
                     throw new SyntaxException("Missing 'in' KeyWord on let-in expression");
-                /*if (tokens[current].type == Token.TokenType.Comma)
+                if (tokens[current].type == Token.TokenType.Comma || tokens[current].type == Token.TokenType.VarInKeyWord)
                 {
-                    varValue = new MathParser(t1, context).tree;
+                    varValue = new Parser(t1, context).tree;
                     context.AddVar(new Variable(varName, varValue));
-                    ParseVarDeclaration();
                     break;
-                }*/
+                }
             }
-            
-            varValue = new Parser(t1, context).tree;
-            current++;
-                //Context c = new Context();
-            context.AddVar(new Variable(varName, varValue));
-            List<Token> t2 = new List<Token>();
-            while (current < tokens.Count)
-                t2.Add(tokens[current++]);
-            return new Parser(t2, context).tree;
+        }
+        
+        
+        //varValue = new Parser(t1, context).tree;
+        current++;
+        //context.AddVar(new Variable(varName, varValue));
+        List<Token> t2 = new List<Token>();
+        while (current < tokens.Count)
+            t2.Add(tokens[current++]);
+        return new Parser(t2, context).tree;
     }
     
     private MyExpression ParseAndOr()
@@ -354,6 +356,8 @@ public class Parser
                 
                 c.AddVar(new Variable(vName, vTree));
             }
+
+            current--;
             return new Parser(f.FunBody, c).tree;
         }
         throw new SyntaxException("Invalid Expression '"+tokens[current].value+"'");

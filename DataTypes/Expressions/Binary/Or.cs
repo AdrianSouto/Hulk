@@ -11,6 +11,13 @@ class Or : BinaryMyExpression
     public override string value => "|";
 
     public override string Evaluate(){
-        return (bool.Parse(LeftMyExpression.Evaluate()) || bool.Parse(RightMyExpression.Evaluate())).ToString();
+        try
+        {
+            return (bool.Parse(LeftMyExpression.Evaluate()) || bool.Parse(RightMyExpression.Evaluate())).ToString();
+        }
+        catch (FormatException)
+        {
+            throw new  SemanticException("La operacion " + value+ " solo esta concebida para booleans");
+        }
     }
 }

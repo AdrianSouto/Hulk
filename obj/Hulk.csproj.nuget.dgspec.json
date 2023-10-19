@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Trabajo\\Universidad\\MIO\\2do Semestre\\Proyectos\\Hulk\\Hulk.csproj": {}
+    "d:\\Trabajo\\Universidad\\MIO\\2do Semestre\\Proyectos\\Hulk\\Hulk.csproj": {}
   },
   "projects": {
-    "D:\\Trabajo\\Universidad\\MIO\\2do Semestre\\Proyectos\\Hulk\\Hulk.csproj": {
+    "d:\\Trabajo\\Universidad\\MIO\\2do Semestre\\Proyectos\\Hulk\\Hulk.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Trabajo\\Universidad\\MIO\\2do Semestre\\Proyectos\\Hulk\\Hulk.csproj",
+        "projectUniqueName": "d:\\Trabajo\\Universidad\\MIO\\2do Semestre\\Proyectos\\Hulk\\Hulk.csproj",
         "projectName": "Hulk",
-        "projectPath": "D:\\Trabajo\\Universidad\\MIO\\2do Semestre\\Proyectos\\Hulk\\Hulk.csproj",
+        "projectPath": "d:\\Trabajo\\Universidad\\MIO\\2do Semestre\\Proyectos\\Hulk\\Hulk.csproj",
         "packagesPath": "C:\\Users\\Adrian\\.nuget\\packages\\",
-        "outputPath": "D:\\Trabajo\\Universidad\\MIO\\2do Semestre\\Proyectos\\Hulk\\obj\\",
+        "outputPath": "d:\\Trabajo\\Universidad\\MIO\\2do Semestre\\Proyectos\\Hulk\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Adrian\\AppData\\Roaming\\NuGet\\NuGet.Config"
